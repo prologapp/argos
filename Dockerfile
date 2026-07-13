@@ -32,5 +32,8 @@ FROM base AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /app /app
+# Pré-instala o pnpm (usado pelo scripts/release.sh) pra não depender de
+# download do corepack em runtime.
+RUN corepack install
 EXPOSE 4001
 CMD ["node", "apps/backend/dist/processes/proc/web.js"]

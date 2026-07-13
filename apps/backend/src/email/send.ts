@@ -7,12 +7,12 @@ import logger from "@/logger";
 const production = config.get("env") === "production";
 const resendApiKey = config.get("resend.apiKey");
 
-// Resend throws if API key is missing
-// It is tolerable in test and development but not in production
-const resend =
-  resendApiKey || production ? new Resend(config.get("resend.apiKey")) : null;
+// Resend throws if the API key is missing, so we only instantiate it when a key
+// is provided. Email sending is optional: without a key (e.g. self-hosted
+// setups) emails are simply skipped instead of crashing the app.
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-const defaultFrom = "Argos <contact@argos-ci.com>";
+const defaultFrom = config.get("email.from");
 
 /**
  * Send an email using Resend.
@@ -31,12 +31,10 @@ export async function sendEmail(options: {
    */
   react: React.ReactElement;
 }) {
-  if (production) {
-    if (!resend) {
-      logger.error("Resend API key is missing");
-      return null;
+  if (!resend) {
+    if (production) {
+      logger.warn("Resend API key is missing, skipping email sending");
     }
-  } else if (!resend) {
     return null;
   }
   const text = await render(options.react, { plainText: true });

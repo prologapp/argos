@@ -11,7 +11,9 @@ ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app
-RUN pnpm fetch
+# Timeout maior: tarballs grandes (ex.: emojibase-data) estouram o default de 60s
+# em redes lentas.
+RUN pnpm fetch --fetch-timeout=600000
 
 COPY . /app
 RUN pnpm install --offline --frozen-lockfile --config.confirmModulesPurge=false

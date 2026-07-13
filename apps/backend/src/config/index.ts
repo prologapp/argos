@@ -575,6 +575,7 @@ export function createConfig() {
         doc: "Stage prefix for DynamoDB tables",
         format: String,
         default: "development",
+        env: "DYNAMODB_STAGE",
       },
     },
     bucket: {

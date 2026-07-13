@@ -62,7 +62,16 @@ export function createConfig() {
     },
     contactEmail: {
       doc: "The contact email",
-      default: "contact@argos-ci.com",
+      default: "no-reply@prologapp.com",
+      env: "CONTACT_EMAIL",
+    },
+    email: {
+      from: {
+        doc: "The email address used as sender for outgoing emails",
+        format: String,
+        default: "Prolog <no-reply@prologapp.com>",
+        env: "EMAIL_FROM",
+      },
     },
     trackNpmPackagesVersions: {
       doc: "Whether to track npm package versions.",

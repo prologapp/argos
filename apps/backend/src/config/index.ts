@@ -98,11 +98,13 @@ export function createConfig() {
         doc: "Specify if the server is using https or not.",
         format: Boolean,
         default: false,
+        env: "SERVER_SECURE",
       },
       httpsRedirect: {
         doc: "Specify if an https redirection should occur.",
         format: Boolean,
         default: false,
+        env: "SERVER_HTTPS_REDIRECT",
       },
       wildcardDomains: {
         doc: "Domains that matches api and app.",
